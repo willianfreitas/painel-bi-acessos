@@ -6,13 +6,31 @@ from datetime import datetime
 # --- 1. CONFIGURAÇÃO ---
 USUARIOS_PERMITIDOS = {
     "admin": "admin123",
-    "diretoria": "powerbi2024",
-    "gestor": "senhaforte"
+    "clt": "bpbanco25**",
+    "externo": "bpbanco25**",
+    "irfinanceira": "bpbanco25**",
+    "joinville": "bpbanco25**",
+    "mc1": "bpbanco25**",
+    "migcred": "bpbanco25**",
+    "prospera8": "bpbanco25**",
+    "sala1g": "bpbanco25**",
+    "sala2f": "bpbanco25**",
+    "sala3e": "bpbanco25**",
+    "sala404": "bpbanco25**",
+    "sala404h": "bpbanco25**",
+    "sala4d": "bpbanco25**",
+    "sala5c": "bpbanco25**",
+    "sala7a": "bpbanco25**",
+    "sala8": "bpbanco25**",
+    "seguro": "bpbanco25**",
+    "vendas": "bpbanco25**",
+    "vkcredito": "bpbanco25**",
+    "youngai": "bpbanco25**"
 }
 
 # ### NOVO: Configuração das credenciais do BI que aparecerão na tela
-USUARIO_BI_EXIBIR = "usuario.bi@empresa.com.br"
-SENHA_BI_EXIBIR = "SenhaDoBi@2025"
+USUARIO_BI_EXIBIR = "ti@bpcreditos.com.br"
+SENHA_BI_EXIBIR = "bande#26"
 
 NOME_PLANILHA_GOOGLE = "historico_acessos_bi"
 
