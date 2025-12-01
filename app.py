@@ -10,22 +10,21 @@ USUARIOS_PERMITIDOS = {
     "gestor": "senhaforte"
 }
 
-# Nome EXATO da sua planilha no Google
+# ### NOVO: Configuração das credenciais do BI que aparecerão na tela
+USUARIO_BI_EXIBIR = "usuario.bi@empresa.com.br"
+SENHA_BI_EXIBIR = "SenhaDoBi@2025"
+
 NOME_PLANILHA_GOOGLE = "historico_acessos_bi"
 
 # --- 2. FUNÇÕES ---
 
 def conectar_google_sheets():
     """Conecta ao Google Sheets usando os segredos do Streamlit Cloud"""
-    # Define as permissões necessárias
     scopes = [
         "https://www.googleapis.com/auth/spreadsheets",
         "https://www.googleapis.com/auth/drive"
     ]
-    
-    # Pega as credenciais que configuraremos no site do Streamlit
     credentials_info = st.secrets["gcp_service_account"]
-    
     creds = Credentials.from_service_account_info(credentials_info, scopes=scopes)
     client = gspread.authorize(creds)
     return client
@@ -35,22 +34,18 @@ def salvar_log(usuario):
     try:
         client = conectar_google_sheets()
         sheet = client.open(NOME_PLANILHA_GOOGLE).sheet1
-        
         data_hora = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
-        # Adiciona uma nova linha na planilha
         sheet.append_row([data_hora, usuario])
-        
     except Exception as e:
-        # Se der erro no log, o usuário ainda consegue ver o BI, mas avisamos no console
         print(f"Erro ao salvar log: {e}")
 
 def check_password():
-    """Verifica senha (Lógica igual ao anterior)"""
+    """Verifica senha"""
     def password_entered():
         if st.session_state["username"] in USUARIOS_PERMITIDOS and \
            st.session_state["password"] == USUARIOS_PERMITIDOS[st.session_state["username"]]:
             st.session_state["password_correct"] = True
-            salvar_log(st.session_state["username"]) # Salva no Google Sheets
+            salvar_log(st.session_state["username"])
             del st.session_state["password"]
         else:
             st.session_state["password_correct"] = False
@@ -71,8 +66,25 @@ def check_password():
 st.set_page_config(page_title="Portal BI Corporativo", layout="wide")
 
 if check_password():
-    st.success(f"Bem-vindo(a), {st.session_state['username']}!")
+    # Mensagem de boas-vindas menorzinha
+    st.write(f"Logado como: **{st.session_state['username']}**")
+    
     st.divider()
+
+    # ### NOVO: Exibição das Credenciais do BI ###
+    st.markdown("### 🔑 Credenciais de Acesso ao Relatório")
+    
+    # Criamos 2 colunas para ficar lado a lado (mais organizado)
+    col1, col2 = st.columns(2)
+    
+    with col1:
+        st.info(f"**Usuário BI:**\n\n`{USUARIO_BI_EXIBIR}`")
+        
+    with col2:
+        st.warning(f"**Senha BI:**\n\n`{SENHA_BI_EXIBIR}`")
+    
+    st.divider()
+    # ### FIM DO NOVO BLOCO ###
     
     power_bi_code = """
     <iframe title="BI 1.7" width="100%" height="800" 
